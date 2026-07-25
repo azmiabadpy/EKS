@@ -1,0 +1,27 @@
+# Node.js dependencies
+task-management-app/node_modules/
+
+# Environment files
+.env
+*.env
+
+# Logs
+*.log
+
+# Terraform files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Terraform variable files with secrets
+*.tfvars
+*.tfvars.json
+
+# SSH/private keys
+*.pem
+*.key
+
+# OS files
+.DS_Store

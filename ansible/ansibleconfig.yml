@@ -1,0 +1,15 @@
+---
+- name: installing tools on vms
+  host : jenkins
+  become:true
+  tasks:
+  - name: installing jenkins java docker awscli kubectl
+    script: script1.sh
+
+
+- name: installing jenkins on server1
+  host: localhost
+  become: true
+  tasks:
+  - name: installing java and jenkins
+    script: script2.sh
