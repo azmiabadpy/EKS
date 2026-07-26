@@ -1,0 +1,41 @@
+pipeline {
+    agent {
+        label 'worker'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/azmiabadpy/EKS.git'
+            }
+        }
+        stage ('build'){
+            steps {
+                sh 'sudo docker build -t /taskmanagement/azmiabad/azmieks:latest '
+            }
+        }
+        stage ('remoterepoitory'){
+            steps{
+                withCredentials([usernamePassword(credentialsId : 'dockerhubid',usernameVariable :'username',passwordVariable : 'password')]){
+                sh 'sudo docker login -u ${username} -p ${password}'
+                }
+                sh 'sudo docker push azmiabad/azmieks:latest'
+            }
+        }
+        stage ('deploy'){
+            steps{
+                sh 'aws eks update-kubeconfig --region ap-south-1 --name eksclusternodejs'
+                sh 'kubectl apply -f taskmanagement/k8s/'
+                
+            }
+        }
+   post{
+     succes{
+        echo " pieline is success,apllication is deployed to eks"
+    }
+     failure{
+          echo "pipeline is failed ,pleasecheck console output"
+    }
+  }
+}
