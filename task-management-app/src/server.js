@@ -12,6 +12,87 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Homepage
+app.get("/", (req, res) => {
+  res.status(200).send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Task Management Application</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f4f6f8;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+        }
+
+        .container {
+          background: white;
+          padding: 40px;
+          border-radius: 12px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          max-width: 600px;
+          width: 90%;
+        }
+
+        h1 {
+          color: #2c3e50;
+        }
+
+        p {
+          color: #555;
+          font-size: 18px;
+        }
+
+        .status {
+          color: green;
+          font-weight: bold;
+        }
+
+        a {
+          display: inline-block;
+          margin: 10px;
+          padding: 12px 20px;
+          text-decoration: none;
+          color: white;
+          background: #3498db;
+          border-radius: 6px;
+        }
+
+        a:hover {
+          background: #2980b9;
+        }
+      </style>
+    </head>
+
+    <body>
+      <div class="container">
+        <h1>Task Management Application</h1>
+
+        <p class="status">
+          Application is running successfully
+        </p>
+
+        <p>
+          Deployed using Jenkins, Docker, and Amazon EKS.
+        </p>
+
+        <a href="/health">Check Application Health</a>
+
+        <a href="/tasks">View Tasks</a>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
 // Health check
 app.get("/health", (req, res) => {
   // Create health-check log
