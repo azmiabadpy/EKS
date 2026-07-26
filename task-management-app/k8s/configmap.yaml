@@ -6,6 +6,6 @@ metadata:
 data:
   PORT: "3000"
   DB_PORT: "3306"
-  DB_NAME: "database1"
+  DB_NAME: "taskdb"
   AWS_REGION: "ap-south-1"
   S3_BUCKET_NAME: "ekslogsbucketazmi"
