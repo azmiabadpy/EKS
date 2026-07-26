@@ -13,21 +13,22 @@ app.use(cors());
 app.use(express.json());
 
 // Health check
-app.get("/health", async (req, res) => {
+app.get("/health", (req, res) => {
+  // Create health-check log
   const logMessage = logInfo("Health check successful");
 
-  try {
-    await uploadLogToS3(logMessage);
-  } catch (error) {
+  // Respond immediately to Kubernetes
+  res.status(200).json({
+    status: "UP",
+    message: "Task Management Application is running"
+  });
+
+  // Upload log asynchronously in the background
+  uploadLogToS3(logMessage).catch((error) => {
     console.error(
       "Failed to upload health check log to S3:",
       error.message
     );
-  }
-
-  res.status(200).json({
-    status: "UP",
-    message: "Task Management Application is running"
   });
 });
 
