@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-management-app
+  namespace: task-management
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: task-management-app
+
+  template:
+    metadata:
+      labels:
+        app: task-management-app
+
+    spec:
+      containers:
+        - name: task-management-app
+          image: azmiabad/azmieks:latest
+
+          ports:
+            - containerPort: 3000
+
+          envFrom:
+            - configMapRef:
+                name: task-management-config
+
+            - secretRef:
+                name: task-management-secret
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 20
